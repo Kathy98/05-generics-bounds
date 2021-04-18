@@ -66,7 +66,14 @@ public interface SimpleList<T> extends Iterable<T> {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	default <R> SimpleList<R> map(Function<T, R> transform) {
+	// Bounds on Wildcards:
+	// 1. Modify the map method of the SimpleList interface according to the PECS principle
+	// For Function, PECS means: the input T is consumer (hence super),
+	// 							 the output R is the producer (hence extends).
+	// wildcard bound: ? extends SuperType (upper) or ? super SubType (lower)
+	/*Alte Methodendeklaration:
+	default <R> SimpleList<R> map(Function<T, R> transform) {*/
+	default <R> SimpleList<R> map(Function<? super T, ? extends R> transform) {
 		SimpleList<R> result;
 		try {
 			result = (SimpleList<R>) getClass().newInstance();
