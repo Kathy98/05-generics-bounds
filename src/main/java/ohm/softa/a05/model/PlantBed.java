@@ -11,10 +11,10 @@ import ohm.softa.a05.collections.SimpleListImpl;
 public class PlantBed<T extends Plant>{
 
     private final SimpleList<T> plants;
-
     public PlantBed(){
         this.plants = new SimpleListImpl<>();
     }
+    //ODER gleich: private SimpleList<T> plants = new SimpleListImpl<>();
 
     public void add(T plant){
         plants.add(plant);
@@ -27,6 +27,7 @@ public class PlantBed<T extends Plant>{
     // The method getPlantsByColor is very easy to implement if you think of the filter method of the SimpleList!
     public SimpleList<T> getPlantsByColor(PlantColor color){
         // Usage of "default SimpleList<T> filter(SimpleFilter<T> filter)" in class "SimpleList"
+        // p = jede einzelne Pflanze der Liste
         return plants.filter(p -> p.getColor().equals(color));
     }
 

@@ -5,6 +5,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public abstract class Plant implements Comparable<Plant>{
+
     private final double height;
     private final String family;
     private final String name;
@@ -33,15 +34,19 @@ public abstract class Plant implements Comparable<Plant>{
 
     public abstract PlantColor getColor();
 
-    // Methoden equals, hascode, toString implementieren:
+    // Methoden equals, hascode, toString implementieren.
+    // Warum? Inhaltsgleichheit ist interessant, nicht Objektgleichheit
     // siehe auch: https://www.java-blog-buch.de/040311-besondere-methoden-equals-hashcode-und-tostring/
     // https://www.infoworld.com/article/2072488/apache-commons-equalsbuilder-and-hashcodebuilder.html
-    public boolean equals(Object obj) {
-        if (!(obj instanceof Plant))
+    @Override
+    public boolean equals(Object o) {
+        // Warum equals(Object o)? Will equals überschreiben, nicht überschatten.
+        // Mit equals(Plant p) würde ich nur überschatten
+        if (!(o instanceof Plant)) //ODER: if(o.getClass() != this.getClass())
             return false;
-        if (this == obj)
+        if (this == o)
             return true;
-        final Plant otherObject = (Plant) obj;
+        final Plant otherObject = (Plant)o;
 
         // append() takes two arguments to compare; can also compare arrays
         return new EqualsBuilder()
@@ -56,7 +61,9 @@ public abstract class Plant implements Comparable<Plant>{
     // Der Hash-Code ist ein integraler Wert, der verwendet wird, um Objekte in einem hash-basierten Container
     // abzulegen oder sie in einem solchen Container zu finden.
     // A hashCode which creates a hash from the two unique identifiers
-    public int hashCode( ) {
+    // Verwende ich bei einer HashMap
+    @Override
+    public int hashCode() {
         return new HashCodeBuilder(17, 37)
                 .append(getHeight())
                 .append(getFamily())
@@ -65,6 +72,7 @@ public abstract class Plant implements Comparable<Plant>{
                 .toHashCode();
     }
 
+    @Override
     public String toString() {
         return new ToStringBuilder(this)
                 .append("family", getFamily())
@@ -74,9 +82,16 @@ public abstract class Plant implements Comparable<Plant>{
                 .toString();
     }
 
-    //   Flowers compare to each other by height
+    // Plants compare to each other by height
+    // compareTo Methode, damit ich Pflanzen vergleichen kann;
+    // 0: if (x==y)
+    // -1: if (x < y)
+    // 1: if (x > y)
     @Override
     public int compareTo(Plant plant) {
+
         return Double.compare(this.getHeight(), plant.getHeight());
+        // Könnts auch selbst vergleichen:
+        // return (int) Math.signum(height - plant.height)
     }
 }

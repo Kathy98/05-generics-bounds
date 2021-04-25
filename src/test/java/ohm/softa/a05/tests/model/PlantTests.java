@@ -72,8 +72,11 @@ class PlantTests {
         flowers.add(new Shrub(4.5, "Buchsbaumgewächse", "Buchsbaum"));
         flowers.add(new Flower(2.5, "Korbblütler", "Sonnenblume", PlantColor.YELLOW));
 
-        flowers.sort(Plant::compareTo);
-
+        // Syntax: <Class name>::<method name>
+        //Bsp.:
+        // stream.forEach( s-> System.out.println(s));
+        // stream.forEach( System.out::println(s));
+        flowers.sort(Plant::compareTo); // Sortieren Pflanzen nach Höhe
         double lastHeight = 0.0;
         for(Plant f : flowers){
             assertTrue(f.getHeight() > lastHeight);

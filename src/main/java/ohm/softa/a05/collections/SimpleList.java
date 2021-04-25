@@ -1,5 +1,8 @@
 package ohm.softa.a05.collections;
 
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.function.Function;
 
 /**
@@ -68,8 +71,13 @@ public interface SimpleList<T> extends Iterable<T> {
 	@SuppressWarnings("unchecked")
 	// Bounds on Wildcards:
 	// 1. Modify the map method of the SimpleList interface according to the PECS principle
-	// For Function, PECS means: the input T is consumer (hence super),
-	// 							 the output R is the producer (hence extends).
+	// For Function, PECS means: the input T is consumer (hence super),		   erlaubt alle Elternklassen von T
+	// 							 the output R is the producer (hence extends). erlaubt alle Kindsklassen von R
+	// Ich lese das T und schreibe das R (was rauskommt bei der Funktion ist das was ich beim add() reingebe)
+	// T produziert mir die Einträge und R nimmt die entgegen
+	// Ich nehme entgegen was T oder drüber ist und erhalte was was R oder drunter ist
+	// Funktion bildet von T nach R ab. Will z.B. Plant -> Flower (Plant in Flower überführen)
+	// Hab Plant oder was drüber und will in was übersetzen was Plant ist oder drunter (?)
 	// wildcard bound: ? extends SuperType (upper) or ? super SubType (lower)
 	/*Alte Methodendeklaration:
 	default <R> SimpleList<R> map(Function<T, R> transform) {*/
@@ -85,4 +93,20 @@ public interface SimpleList<T> extends Iterable<T> {
 		}
 		return result;
 	}
+	// ? extends R means you can pass an object whose class is derived by R, a.k.a subclass of R.
+	// ? super T (Klasse könnte T oder eine Basisklasse von T sein)
+
+	//Bsp.:
+	/*public static main(String[] args){
+		SimpleList<Plant> p1 = new SimpleListImpl<>();
+		SimpleList<Flower> p2 = new SimpleListImpl<>();
+		SimpleList<Shrub> p3 = new SimpleListImpl<>();
+		p3 = p1.map(f -> f);
+	}*/
+
+	// Wildcard = beliebiger Parameter wo versucht wird einzusetzen was passt
+	// Ich erlaube das diese Variable nur in einem bestimmten Bereich ist,
+	// also mit extends z.B. das die Variable nen Typ drunter haben muss
+	// Wenn ich ne Transform Funktion hab kommt was was über T sitzt rein und was was unter R sitzt raus
+	// Wildcards machen eig. nur Sinn in Kombination mit Bounds
 }
